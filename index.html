@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lyric Player</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div>
+            <h1>🎵 Lyric Player</h1>
+            <p>Music • Lyrics • Memories</p>
+        </div>
+
+        <button id="searchToggle">🔍</button>
+
+    </header>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box" id="searchBox">
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search songs or artists..."
+        >
+
+    </div>
+
+
+    <!-- PLAYER -->
+
+    <section class="player">
+
+        <img
+            id="cover"
+            class="cover"
+            src="music/default-cover.jpg"
+            alt="Album Cover"
+        >
+
+        <h2 id="title">Select a song</h2>
+
+        <p id="artist">Artist</p>
+
+
+        <!-- LYRICS -->
+
+        <div
+            id="lyrics"
+            class="lyrics"
+        >
+
+            <div class="empty">
+                Select a song from the library
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-area">
+
+            <span id="currentTime">0:00</span>
+
+            <input
+                type="range"
+                id="progress"
+                min="0"
+                max="100"
+                value="0"
+            >
+
+            <span id="duration">0:00</span>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <button id="previous">⏮</button>
+
+            <button
+                id="play"
+                class="play"
+            >
+                ▶
+            </button>
+
+            <button id="next">⏭</button>
+
+        </div>
+
+
+        <div class="volume">
+
+            🔊
+
+            <input
+                id="volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- LIBRARY -->
+
+    <section class="library">
+
+        <h2>Song Library</h2>
+
+        <div id="songList"></div>
+
+    </section>
+
+</div>
+
+
+<audio id="audio"></audio>
+
+<script src="app.js"></script>
+
+</body>
+</html>
