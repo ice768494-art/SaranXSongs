@@ -1,147 +1,2020 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090c">
 
-    <title>Lyric Player</title>
+<title>Radhima • Music Player</title>
 
-    <link rel="stylesheet" href="style.css">
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #08090c;
+  --panel: #111318;
+  --panel2: #181a20;
+  --text: #fff;
+  --muted: #9a9ca5;
+  --accent: #1ed760;
+  --hover: #24262d;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 90px);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  background: #050608;
+  padding: 25px 18px;
+  border-right: 1px solid #181a1f;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  margin-bottom: 35px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.menu-title {
+  color: #777a84;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 20px 12px 10px;
+}
+
+.menu button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  padding: 12px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.menu button:hover,
+.menu button.active {
+  background: var(--hover);
+  color: white;
+}
+
+.menu button span {
+  display: inline-block;
+  width: 28px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+  padding: 20px 28px 120px;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #28322d 0%,
+      transparent 45%
+    ),
+    var(--bg);
+
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.search {
+  width: min(440px, 100%);
+  background: #202229;
+  border-radius: 30px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  width: 100%;
+  font-size: 14px;
+}
+
+.profile {
+  background: #1d1f25;
+  padding: 8px 13px;
+  border-radius: 25px;
+  font-size: 13px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 35px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.cover {
+  width: 280px;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,.55);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.label {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ddd;
+}
+
+.hero h1 {
+  font-size: clamp(45px, 7vw, 86px);
+  margin: 8px 0;
+  line-height: .95;
+}
+
+.artist {
+  color: #b8bbc4;
+  margin-bottom: 25px;
+}
+
+.artist strong {
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.play-big {
+  border: 0;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: 22px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.play-big:hover {
+  transform: scale(1.06);
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  color: white;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 30px;
+  margin-top: 45px;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   TRACK LIST
+========================= */
+
+.track {
+  display: grid;
+  grid-template-columns: 45px 1fr 70px 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.track:hover,
+.track.active {
+  background: var(--hover);
+}
+
+.track-number {
+  color: #888;
+  text-align: center;
+}
+
+.track-info {
+  min-width: 0;
+}
+
+.track-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  color: #858791;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.duration {
+  color: #8b8d96;
+  font-size: 12px;
+}
+
+.more {
+  color: #aaa;
+}
+
+/* =========================
+   LYRICS
+========================= */
+
+.lyrics {
+  background:
+    linear-gradient(
+      160deg,
+      #181b20,
+      #0d0f13
+    );
+
+  border-radius: 14px;
+  padding: 25px;
+  height: 430px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lyrics h2 {
+  margin-bottom: 20px;
+}
+
+.lyrics-box {
+  height: 350px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.lyrics-box::-webkit-scrollbar {
+  display: none;
+}
+
+.lyric-line {
+  color: #70737d;
+  font-size: 19px;
+  font-weight: 700;
+  margin: 18px 0;
+  transition: .25s;
+  cursor: pointer;
+}
+
+.lyric-line:hover {
+  color: #bbb;
+}
+
+.lyric-line.active {
+  color: white;
+  transform: scale(1.02);
+}
+
+/* =========================
+   LRC STATUS
+========================= */
+
+.lyrics-status {
+  color: #777a84;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   PLAYER
+========================= */
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 90px;
+
+  background: rgba(15,16,20,.97);
+
+  border-top: 1px solid #292b31;
+
+  display: grid;
+  grid-template-columns: 280px 1fr 220px;
+
+  align-items: center;
+
+  gap: 25px;
+
+  padding: 12px 22px;
+
+  z-index: 100;
+
+  backdrop-filter: blur(15px);
+}
+
+.now-playing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.now-playing img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.now-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-artist {
+  color: #858791;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.control-buttons button {
+  background: none;
+  border: 0;
+  color: #ddd;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.control-buttons button:hover {
+  color: white;
+}
+
+.control-buttons .main-play {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: white;
+  color: black;
+  font-size: 15px;
+}
+
+.progress-area {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #888;
+}
+
+input[type="range"] {
+  accent-color: white;
+  cursor: pointer;
+}
+
+.progress {
+  flex: 1;
+}
+
+/* =========================
+   VOLUME
+========================= */
+
+.volume {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.volume input {
+  width: 100px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 900px) {
+
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    padding: 15px 16px 120px;
+  }
+
+  .hero {
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+  }
+
+  .cover {
+    width: 150px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .lyrics {
+    height: 350px;
+  }
+
+  .player {
+    height: 75px;
+    grid-template-columns: 1fr auto;
+    padding: 8px 12px;
+  }
+
+  .now-playing img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .progress-area {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 100%;
+  }
+
+  .volume {
+    display: none;
+  }
+
+  .control-buttons button:not(.main-play) {
+    display: none;
+  }
+}
+
+@media(max-width: 520px) {
+
+  .topbar {
+    margin-bottom: 20px;
+  }
+
+  .profile {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .cover {
+    width: min(280px, 80vw);
+    margin: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero h1 {
+    font-size: 45px;
+  }
+
+  .track {
+    grid-template-columns: 30px 1fr;
+  }
+
+  .track .more,
+  .track .duration {
+    display: none;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-    <!-- HEADER -->
+  <!-- SIDEBAR -->
 
-    <header>
+  <aside class="sidebar">
 
-        <div>
-            <h1>🎵 Lyric Player</h1>
-            <p>Music • Lyrics • Memories</p>
-        </div>
+    <div class="logo">
+      <span>●</span> Radhima
+    </div>
 
-        <button id="searchToggle">🔍</button>
+    <div class="menu-title">
+      Menu
+    </div>
 
-    </header>
+    <div class="menu">
+
+      <button class="active">
+        <span>⌂</span>
+        Home
+      </button>
+
+      <button>
+        <span>⌕</span>
+        Search
+      </button>
+
+      <button>
+        <span>♫</span>
+        Your Library
+      </button>
+
+    </div>
+
+    <div class="menu-title">
+      Your Playlists
+    </div>
+
+    <div class="menu">
+
+      <button>
+        <span>＋</span>
+        Create Playlist
+      </button>
+
+      <button>
+        <span>♥</span>
+        Liked Songs
+      </button>
+
+    </div>
+
+  </aside>
 
 
-    <!-- SEARCH -->
+  <!-- MAIN -->
 
-    <div class="search-box" id="searchBox">
+  <main class="main">
+
+    <div class="topbar">
+
+      <div class="search">
+
+        🔍
 
         <input
-            id="searchInput"
-            type="text"
-            placeholder="Search songs or artists..."
+          id="searchInput"
+          type="text"
+          placeholder="Search songs..."
+          autocomplete="off"
         >
+
+      </div>
+
+      <div class="profile">
+        Guest
+      </div>
 
     </div>
 
 
-    <!-- PLAYER -->
+    <!-- HERO -->
 
-    <section class="player">
+    <section class="hero">
+
+      <div class="cover">
 
         <img
-            id="cover"
-            class="cover"
-            src="music/default-cover.jpg"
-            alt="Album Cover"
+          id="coverImage"
+          src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80"
+          alt="Album cover"
         >
 
-        <h2 id="title">Select a song</h2>
-
-        <p id="artist">Artist</p>
+      </div>
 
 
-        <!-- LYRICS -->
+      <div>
+
+        <div class="label">
+          Now Playing
+        </div>
+
+        <h1 id="heroTitle">
+          Radhima
+        </h1>
+
+        <p class="artist">
+          <strong id="heroArtist">
+            Your Artist
+          </strong>
+          • Single • 2026
+        </p>
+
+
+        <div class="hero-buttons">
+
+          <button
+            class="play-big"
+            id="heroPlay"
+            aria-label="Play"
+          >
+            ▶
+          </button>
+
+          <button
+            class="icon-btn"
+            id="likeBtn"
+            aria-label="Like"
+          >
+            ♡
+          </button>
+
+          <button
+            class="icon-btn"
+            aria-label="More"
+          >
+            ⋯
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SONGS + LYRICS -->
+
+    <section class="content">
+
+      <div>
+
+        <h2 class="section-title">
+          Songs
+        </h2>
+
+        <div id="trackList"></div>
+
+      </div>
+
+
+      <!-- LYRICS -->
+
+      <div class="lyrics">
+
+        <h2>
+          Lyrics
+        </h2>
 
         <div
-            id="lyrics"
-            class="lyrics"
+          class="lyrics-status"
+          id="lyricsStatus"
         >
-
-            <div class="empty">
-                Select a song from the library
-            </div>
-
+          Loading lyrics...
         </div>
 
+        <div
+          class="lyrics-box"
+          id="lyricsBox"
+        ></div>
 
-        <!-- PROGRESS -->
-
-        <div class="progress-area">
-
-            <span id="currentTime">0:00</span>
-
-            <input
-                type="range"
-                id="progress"
-                min="0"
-                max="100"
-                value="0"
-            >
-
-            <span id="duration">0:00</span>
-
-        </div>
-
-
-        <!-- CONTROLS -->
-
-        <div class="controls">
-
-            <button id="previous">⏮</button>
-
-            <button
-                id="play"
-                class="play"
-            >
-                ▶
-            </button>
-
-            <button id="next">⏭</button>
-
-        </div>
-
-
-        <div class="volume">
-
-            🔊
-
-            <input
-                id="volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value="1"
-            >
-
-        </div>
+      </div>
 
     </section>
 
-
-    <!-- LIBRARY -->
-
-    <section class="library">
-
-        <h2>Song Library</h2>
-
-        <div id="songList"></div>
-
-    </section>
+  </main>
 
 </div>
 
 
-<audio id="audio"></audio>
+<!-- BOTTOM PLAYER -->
 
-<script src="app.js"></script>
+<div class="player">
+
+  <div class="now-playing">
+
+    <img
+      id="playerCover"
+      src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80"
+      alt="Cover"
+    >
+
+    <div>
+
+      <div
+        class="now-title"
+        id="playerTitle"
+      >
+        Radhima
+      </div>
+
+      <div
+        class="now-artist"
+        id="playerArtist"
+      >
+        Your Artist
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="controls">
+
+    <div class="control-buttons">
+
+      <button
+        id="shuffleBtn"
+        aria-label="Shuffle"
+      >
+        🔀
+      </button>
+
+      <button
+        id="prevBtn"
+        aria-label="Previous"
+      >
+        ⏮
+      </button>
+
+      <button
+        class="main-play"
+        id="playBtn"
+        aria-label="Play"
+      >
+        ▶
+      </button>
+
+      <button
+        id="nextBtn"
+        aria-label="Next"
+      >
+        ⏭
+      </button>
+
+      <button
+        id="repeatBtn"
+        aria-label="Repeat"
+      >
+        🔁
+      </button>
+
+    </div>
+
+
+    <div class="progress-area">
+
+      <span id="currentTime">
+        0:00
+      </span>
+
+      <input
+        class="progress"
+        id="progress"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+      <span id="duration">
+        0:00
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="volume">
+
+    🔊
+
+    <input
+      id="volume"
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      value="0.8"
+    >
+
+  </div>
+
+</div>
+
+
+<audio
+  id="audio"
+  preload="metadata"
+></audio>
+
+
+<script>
+
+/* =========================================
+   SONG DATABASE
+
+   audio = MP3 location
+   lrc   = LRC location
+   ========================================= */
+
+const songs = [
+
+  {
+    title: "Radhima",
+    artist: "Your Artist",
+
+    cover:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
+
+    audio:
+      "songs/radhima.mp3",
+
+    lrc:
+      "lyrics/radhima.lrc"
+  },
+
+
+  {
+    title: "Your Second Song",
+    artist: "Your Artist",
+
+    cover:
+      "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80",
+
+    audio:
+      "songs/song2.mp3",
+
+    lrc:
+      "lyrics/song2.lrc"
+  },
+
+
+  {
+    title: "Your Third Song",
+    artist: "Your Artist",
+
+    cover:
+      "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800&q=80",
+
+    audio:
+      "songs/song3.mp3",
+
+    lrc:
+      "lyrics/song3.lrc"
+  }
+
+];
+
+
+/* =========================================
+   ELEMENTS
+   ========================================= */
+
+const audio =
+  document.getElementById("audio");
+
+const playBtn =
+  document.getElementById("playBtn");
+
+const heroPlay =
+  document.getElementById("heroPlay");
+
+const progress =
+  document.getElementById("progress");
+
+const volume =
+  document.getElementById("volume");
+
+const currentTime =
+  document.getElementById("currentTime");
+
+const duration =
+  document.getElementById("duration");
+
+const trackList =
+  document.getElementById("trackList");
+
+const lyricsBox =
+  document.getElementById("lyricsBox");
+
+const lyricsStatus =
+  document.getElementById("lyricsStatus");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+
+/* =========================================
+   STATE
+   ========================================= */
+
+let currentIndex = 0;
+
+let isShuffle = false;
+
+let isRepeat = false;
+
+let parsedLyrics = [];
+
+let activeLyricIndex = -1;
+
+
+/* =========================================
+   FORMAT TIME
+   ========================================= */
+
+function formatTime(seconds) {
+
+  if (!isFinite(seconds)) {
+    return "0:00";
+  }
+
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const secs =
+    Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+
+  return `${minutes}:${secs}`;
+
+}
+
+
+/* =========================================
+   LOAD LRC FILE
+   ========================================= */
+
+async function loadLyrics(url) {
+
+  parsedLyrics = [];
+
+  activeLyricIndex = -1;
+
+  lyricsBox.innerHTML = "";
+
+  lyricsStatus.textContent =
+    "Loading lyrics...";
+
+
+  try {
+
+    const response =
+      await fetch(url);
+
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}`
+      );
+    }
+
+
+    const lrcText =
+      await response.text();
+
+
+    parseLRC(lrcText);
+
+    renderLyrics();
+
+
+    if (parsedLyrics.length > 0) {
+
+      lyricsStatus.textContent =
+        `${parsedLyrics.length} synced lines`;
+
+    } else {
+
+      lyricsStatus.textContent =
+        "No timed lyrics found";
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "LRC loading error:",
+      error
+    );
+
+    lyricsStatus.textContent =
+      "Lyrics file not found";
+
+    lyricsBox.innerHTML = `
+
+      <div class="lyric-line">
+        No lyrics available
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================
+   PARSE LRC
+
+   Supports:
+
+   [00:12.50]Text
+
+   [01:02.100]Text
+
+   [01:02]Text
+   ========================================= */
+
+function parseLRC(lrcText) {
+
+  parsedLyrics = [];
+
+
+  const lines =
+    lrcText.split(/\r?\n/);
+
+
+  lines.forEach(line => {
+
+    /*
+      Find one or more timestamps.
+    */
+
+    const matches =
+      [...line.matchAll(
+        /\[(\d{1,3}):(\d{2})(?:\.(\d{1,3}))?\]/g
+      )];
+
+
+    if (!matches.length) {
+      return;
+    }
+
+
+    /*
+      Remove timestamps to get
+      the actual lyric text.
+    */
+
+    const text =
+      line
+        .replace(
+          /\[\d{1,3}:\d{2}(?:\.\d{1,3})?\]/g,
+          ""
+        )
+        .trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    matches.forEach(match => {
+
+      const minutes =
+        Number(match[1]);
+
+      const seconds =
+        Number(match[2]);
+
+
+      let milliseconds = 0;
+
+
+      if (match[3]) {
+
+        const fraction =
+          match[3];
+
+        if (fraction.length === 1) {
+          milliseconds =
+            Number(fraction) * 100;
+        }
+
+        else if (fraction.length === 2) {
+          milliseconds =
+            Number(fraction) * 10;
+        }
+
+        else {
+          milliseconds =
+            Number(fraction);
+        }
+
+      }
+
+
+      const time =
+        minutes * 60 +
+        seconds +
+        milliseconds / 1000;
+
+
+      parsedLyrics.push({
+
+        time,
+        text
+
+      });
+
+    });
+
+  });
+
+
+  parsedLyrics.sort(
+    (a, b) => a.time - b.time
+  );
+
+}
+
+
+/* =========================================
+   RENDER LYRICS
+   ========================================= */
+
+function renderLyrics() {
+
+  lyricsBox.innerHTML = "";
+
+
+  parsedLyrics.forEach(
+    (line, index) => {
+
+      const element =
+        document.createElement("div");
+
+
+      element.className =
+        "lyric-line";
+
+
+      element.dataset.index =
+        index;
+
+
+      element.textContent =
+        line.text;
+
+
+      /*
+        Clicking a lyric jumps
+        to that timestamp.
+      */
+
+      element.addEventListener(
+        "click",
+        () => {
+
+          audio.currentTime =
+            line.time;
+
+        }
+      );
+
+
+      lyricsBox.appendChild(
+        element
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   LOAD SONG
+   ========================================= */
+
+async function loadSong(
+  index,
+  autoplay = false
+) {
+
+  currentIndex = index;
+
+
+  const song =
+    songs[index];
+
+
+  audio.src =
+    song.audio;
+
+
+  document.getElementById(
+    "coverImage"
+  ).src = song.cover;
+
+
+  document.getElementById(
+    "playerCover"
+  ).src = song.cover;
+
+
+  document.getElementById(
+    "heroTitle"
+  ).textContent =
+    song.title;
+
+
+  document.getElementById(
+    "heroArtist"
+  ).textContent =
+    song.artist;
+
+
+  document.getElementById(
+    "playerTitle"
+  ).textContent =
+    song.title;
+
+
+  document.getElementById(
+    "playerArtist"
+  ).textContent =
+    song.artist;
+
+
+  highlightTrack();
+
+
+  /*
+    Automatically load the matching
+    LRC file.
+  */
+
+  await loadLyrics(song.lrc);
+
+
+  if (autoplay) {
+
+    try {
+
+      await audio.play();
+
+    } catch (error) {
+
+      console.warn(
+        "Playback requires user interaction.",
+        error
+      );
+
+    }
+
+  }
+
+
+  updatePlayButtons();
+
+}
+
+
+/* =========================================
+   PLAY / PAUSE
+   ========================================= */
+
+async function togglePlay() {
+
+  if (audio.paused) {
+
+    try {
+
+      await audio.play();
+
+    } catch (error) {
+
+      alert(
+        "Make sure your MP3 file exists in the songs folder."
+      );
+
+    }
+
+  } else {
+
+    audio.pause();
+
+  }
+
+}
+
+
+/* =========================================
+   PLAY BUTTON UI
+   ========================================= */
+
+function updatePlayButtons() {
+
+  const playing =
+    !audio.paused;
+
+
+  playBtn.textContent =
+    playing ? "❚❚" : "▶";
+
+
+  heroPlay.textContent =
+    playing ? "❚❚" : "▶";
+
+}
+
+
+/* =========================================
+   NEXT SONG
+   ========================================= */
+
+function nextSong() {
+
+  let next;
+
+
+  if (isShuffle) {
+
+    do {
+
+      next =
+        Math.floor(
+          Math.random() *
+          songs.length
+        );
+
+    } while (
+      songs.length > 1 &&
+      next === currentIndex
+    );
+
+  } else {
+
+    next =
+      (currentIndex + 1) %
+      songs.length;
+
+  }
+
+
+  loadSong(
+    next,
+    true
+  );
+
+}
+
+
+/* =========================================
+   PREVIOUS SONG
+   ========================================= */
+
+function previousSong() {
+
+  if (audio.currentTime > 3) {
+
+    audio.currentTime = 0;
+
+    return;
+
+  }
+
+
+  const previous =
+    (currentIndex - 1 + songs.length)
+    % songs.length;
+
+
+  loadSong(
+    previous,
+    true
+  );
+
+}
+
+
+/* =========================================
+   TRACK LIST
+   ========================================= */
+
+function renderTracks(filter = "") {
+
+  trackList.innerHTML = "";
+
+
+  songs.forEach(
+    (song, index) => {
+
+      const searchText =
+        `${song.title} ${song.artist}`
+          .toLowerCase();
+
+
+      if (
+        filter &&
+        !searchText.includes(
+          filter.toLowerCase()
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      const track =
+        document.createElement("div");
+
+
+      track.className =
+        "track";
+
+
+      track.dataset.index =
+        index;
+
+
+      track.innerHTML = `
+
+        <div class="track-number">
+          ${index + 1}
+        </div>
+
+        <div class="track-info">
+
+          <div class="track-title">
+            ${escapeHTML(song.title)}
+          </div>
+
+          <div class="track-artist">
+            ${escapeHTML(song.artist)}
+          </div>
+
+        </div>
+
+        <div class="duration">
+          —
+        </div>
+
+        <div class="more">
+          ⋯
+        </div>
+
+      `;
+
+
+      track.addEventListener(
+        "click",
+        () => loadSong(
+          index,
+          true
+        )
+      );
+
+
+      trackList.appendChild(
+        track
+      );
+
+    }
+  );
+
+
+  highlightTrack();
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+   ========================================= */
+
+function escapeHTML(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* =========================================
+   HIGHLIGHT CURRENT TRACK
+   ========================================= */
+
+function highlightTrack() {
+
+  document
+    .querySelectorAll(".track")
+    .forEach(track => {
+
+      track.classList.toggle(
+        "active",
+        Number(track.dataset.index)
+        === currentIndex
+      );
+
+    });
+
+}
+
+
+/* =========================================
+   SYNC LYRICS
+   ========================================= */
+
+function syncLyrics() {
+
+  if (!parsedLyrics.length) {
+    return;
+  }
+
+
+  let newIndex = -1;
+
+
+  for (
+    let i = 0;
+    i < parsedLyrics.length;
+    i++
+  ) {
+
+    if (
+      audio.currentTime >=
+      parsedLyrics[i].time
+    ) {
+
+      newIndex = i;
+
+    } else {
+
+      break;
+
+    }
+
+  }
+
+
+  if (
+    newIndex === activeLyricIndex
+  ) {
+
+    return;
+
+  }
+
+
+  activeLyricIndex =
+    newIndex;
+
+
+  document
+    .querySelectorAll(".lyric-line")
+    .forEach(
+      (line, index) => {
+
+        line.classList.toggle(
+          "active",
+          index === activeLyricIndex
+        );
+
+      }
+    );
+
+
+  if (activeLyricIndex >= 0) {
+
+    const active =
+      document.querySelector(
+        `.lyric-line[data-index="${activeLyricIndex}"]`
+      );
+
+
+    if (active) {
+
+      active.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+  }
+
+}
+
+
+/* =========================================
+   AUDIO EVENTS
+   ========================================= */
+
+audio.addEventListener(
+  "loadedmetadata",
+  () => {
+
+    duration.textContent =
+      formatTime(
+        audio.duration
+      );
+
+  }
+);
+
+
+audio.addEventListener(
+  "timeupdate",
+  () => {
+
+    if (!audio.duration) {
+      return;
+    }
+
+
+    progress.value =
+      (
+        audio.currentTime /
+        audio.duration
+      ) * 100;
+
+
+    currentTime.textContent =
+      formatTime(
+        audio.currentTime
+      );
+
+
+    syncLyrics();
+
+  }
+);
+
+
+audio.addEventListener(
+  "play",
+  updatePlayButtons
+);
+
+
+audio.addEventListener(
+  "pause",
+  updatePlayButtons
+);
+
+
+audio.addEventListener(
+  "ended",
+  () => {
+
+    if (isRepeat) {
+
+      audio.currentTime = 0;
+
+      audio.play();
+
+    } else {
+
+      nextSong();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+playBtn.addEventListener(
+  "click",
+  togglePlay
+);
+
+
+heroPlay.addEventListener(
+  "click",
+  togglePlay
+);
+
+
+document
+  .getElementById("nextBtn")
+  .addEventListener(
+    "click",
+    nextSong
+  );
+
+
+document
+  .getElementById("prevBtn")
+  .addEventListener(
+    "click",
+    previousSong
+  );
+
+
+/* =========================================
+   SEEK
+   ========================================= */
+
+progress.addEventListener(
+  "input",
+  () => {
+
+    if (!audio.duration) {
+      return;
+    }
+
+
+    audio.currentTime =
+      (
+        Number(progress.value) /
+        100
+      ) * audio.duration;
+
+  }
+);
+
+
+/* =========================================
+   VOLUME
+   ========================================= */
+
+volume.addEventListener(
+  "input",
+  () => {
+
+    audio.volume =
+      Number(volume.value);
+
+  }
+);
+
+
+/* =========================================
+   SHUFFLE
+   ========================================= */
+
+document
+  .getElementById("shuffleBtn")
+  .addEventListener(
+    "click",
+    function () {
+
+      isShuffle =
+        !isShuffle;
+
+
+      this.style.opacity =
+        isShuffle
+          ? "1"
+          : ".55";
+
+    }
+  );
+
+
+/* =========================================
+   REPEAT
+   ========================================= */
+
+document
+  .getElementById("repeatBtn")
+  .addEventListener(
+    "click",
+    function () {
+
+      isRepeat =
+        !isRepeat;
+
+
+      this.style.opacity =
+        isRepeat
+          ? "1"
+          : ".55";
+
+    }
+  );
+
+
+/* =========================================
+   LIKE
+   ========================================= */
+
+document
+  .getElementById("likeBtn")
+  .addEventListener(
+    "click",
+    function () {
+
+      this.textContent =
+        this.textContent === "♡"
+          ? "♥"
+          : "♡";
+
+    }
+  );
+
+
+/* =========================================
+   SEARCH
+   ========================================= */
+
+searchInput.addEventListener(
+  "input",
+  event => {
+
+    renderTracks(
+      event.target.value
+    );
+
+  }
+);
+
+
+/* =========================================
+   KEYBOARD SHORTCUTS
+   ========================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    /*
+      Don't trigger shortcuts while
+      typing in search.
+    */
+
+    if (
+      document.activeElement ===
+      searchInput
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      event.code === "Space"
+    ) {
+
+      event.preventDefault();
+
+      togglePlay();
+
+    }
+
+
+    if (
+      event.code === "ArrowRight"
+    ) {
+
+      if (audio.duration) {
+
+        audio.currentTime =
+          Math.min(
+            audio.currentTime + 5,
+            audio.duration
+          );
+
+      }
+
+    }
+
+
+    if (
+      event.code === "ArrowLeft"
+    ) {
+
+      audio.currentTime =
+        Math.max(
+          audio.currentTime - 5,
+          0
+        );
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   START
+   ========================================= */
+
+audio.volume = 0.8;
+
+renderTracks();
+
+loadSong(0);
+
+</script>
 
 </body>
 </html>
